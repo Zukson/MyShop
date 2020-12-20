@@ -23,8 +23,9 @@ namespace MyShop.API.Installers
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DataContext>();
-            services.AddTransient<ITestEntity, TestEntity>();
+          
             services.AddTransient<IProductTagsHelper, ProductTagsHelper>();
+            services.AddTransient<IProductService, ProductService>();
         }
     }
 }

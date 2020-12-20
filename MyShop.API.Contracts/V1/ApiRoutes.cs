@@ -15,8 +15,8 @@ namespace MyShop.API.Contracts.V1
         public static class Products
         {
             public const string ProductRoot = "products";
-            public const string GetAllProducts = Base + ProductRoot;
-            public const string GetProductById = Base + ProductRoot + "{productId}";
+            public const string GetAllProducts = Base+"/" + ProductRoot;
+            public const string GetProductById = Base +"/" + ProductRoot +"/"+ "{productId}";
 
         }
     }

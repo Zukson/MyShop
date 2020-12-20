@@ -1,3 +1,4 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,7 +33,8 @@ namespace MyShop.API
             
             services.AddControllersWithViews();
             services.InstallServicesInAssembly(Configuration);
-
+            services.AddAutoMapper(typeof(Startup));
+          
 
         }
 

@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace MyShop.API.Helpers
 {
-   public interface IProductTagsHelper
+    public interface IProductTagsHelper
     {
-        public Task<ProductDTO> AddTagsToProduct(ProductDTO product);
-      
+        public Task<List<TagDTO>> AddTagsToProduct(Guid productId);
     }
 }

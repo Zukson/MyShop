@@ -1,4 +1,5 @@
-﻿using MyShop.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using MyShop.API.Data;
 using MyShop.API.DTO;
 using System;
 using System.Collections.Generic;
@@ -14,13 +15,10 @@ namespace MyShop.API.Helpers
         {
             _dataContext = dataContext;
         }
-        public Task<ProductDTO> AddTagsToProduct(ProductDTO product)
+        public  async Task<List<TagDTO>> AddTagsToProduct(Guid productId)
         {
-            var output = _dataContext.PTBridges.
-                Where(x => x.ProductId == product.ProductId).
-                Select(x => new TagDTO { Name = x.TagName }).ToList();
-            product.Tags = output;
-            return Task.FromResult(product);
+            var output = await _dataContext.PTBridges.Where(x => x.ProductId == productId).Select(x => new TagDTO { Name = x.TagName }).ToListAsync();
+            return output;
 
         }
     }

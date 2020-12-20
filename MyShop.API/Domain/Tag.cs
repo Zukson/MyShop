@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyShop.API.Services
+namespace MyShop.API.Domain
 {
-  public  interface ITestEntity
+    public class Tag
     {
-        public void Test();
+        public string Name { get; set; }
     }
 }
