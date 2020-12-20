@@ -15,10 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
     <Folder Include="Domain\" />
-    <Folder Include="DTO\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MyShop.API.Contracts\MyShop.API.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

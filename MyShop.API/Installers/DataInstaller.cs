@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MyShop.API.Data;
+using MyShop.API.Helpers;
+using MyShop.API.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +23,8 @@ namespace MyShop.API.Installers
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<DataContext>();
+            services.AddTransient<ITestEntity, TestEntity>();
+            services.AddTransient<IProductTagsHelper, ProductTagsHelper>();
         }
     }
 }
