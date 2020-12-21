@@ -12,7 +12,7 @@ namespace MyShop.API.Installers
 
         public static   void InstallServicesInAssembly(this IServiceCollection services,IConfiguration configuration)
         {
-            var nameOfAssembly = typeof(Startup).Assembly.GetName();
+            
             var installers = typeof(Startup).Assembly.ExportedTypes.Where(x => typeof(IInstaller).IsAssignableFrom(x) && x.IsClass).Select(x => Activator.CreateInstance(x)).Cast<IInstaller>().ToList();
             installers.ForEach(x => x.ConfigureServices(services, configuration));
 

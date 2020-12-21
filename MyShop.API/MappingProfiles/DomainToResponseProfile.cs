@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using MyShop.API.Contracts.V1.Responses;
+using MyShop.API.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,8 @@ namespace MyShop.API.MappingProfiles
     {
         public DomainToResponseProfile()
         {
-           
+            CreateMap<Product, ProductResponse>();
+
         }
     }
 }
