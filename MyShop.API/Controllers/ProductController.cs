@@ -49,16 +49,25 @@ namespace MyShop.API.Controllers
         {
             var product = _mapper.Map<Product>(productRequest);
             product.ProductId = Guid.NewGuid();
-
-            var success =  await _productService.CreateProductAsync(product);
-            if(!success)
+            try
             {
-                BadRequest();
+                var success = await _productService.CreateProductAsync(product);
+                if (!success)
+                {
+                    BadRequest("Something went wrong");
 
+                }
+                return Created(_uriService.GetPostUri(product.ProductId.ToString()), _mapper.Map<ProductResponse>(product));
             }
 
+            catch(Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+           
+
             
-                return Created(_uriService.GetPostUri(product.ProductId.ToString()), _mapper.Map<ProductResponse>(product));
+               
             
         }
 

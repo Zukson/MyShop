@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MyShop.API.Contracts.V1.Responses;
 using MyShop.API.Data;
@@ -26,10 +27,18 @@ namespace MyShop.API.Services
         public  async  Task<List<Product>> GetAllProductsAsync()
         {
 
-            var output = await _dataContext.Products.ToListAsync();
-             Parallel.ForEach(output,  x => x.Tags =  _productTagsHelper.AddTagsToProduct(x.ProductId).Result);
-          
-            return _mapper.Map<List<Product>>(output);
+            var productsDTO = await _dataContext.Products.ToListAsync();
+            var products = _mapper.Map<List<Product>>(productsDTO);
+            foreach(var product in products)
+            {
+           product.Tags=_mapper.Map<List<Tag>>( await   _productTagsHelper.AddTagsToProduct(product.ProductId));
+            }
+           // Parallel.ForEach(products, async product => await _productTagsHelper.AddTagsToProduct(product.ProductId));
+
+            return products;
+
+
+         
 
         }
 
@@ -53,11 +62,34 @@ namespace MyShop.API.Services
         public async Task<bool>CreateProductAsync(Product product)
         {
              await _dataContext.Products.AddAsync(_mapper.Map<ProductDTO>(product));
-          var created=  await _dataContext.SaveChangesAsync();
+          
+            await InsertIntoBridgeTable(product);
+            var created = await _dataContext.SaveChangesAsync();
             return created > 0;
 
         }
 
+        private  async Task InsertIntoBridgeTable(Product product)
+        {
+            //Parallel.ForEach(product.Tags, tag => _dataContext.PTBridges.AddAsync(new ProductTagBridgeDTO
+            //{
+            //    ProductId=product.ProductId,
+            //    TagName=tag.Name
+            //}
+           
+            // )
+            //);
+
+            foreach(var tag in product.Tags)
+            {
+                await _dataContext.Database.ExecuteSqlRawAsync("Insert into PTBridges(ProductId,TagName) Values (@productId,@tagName)"
+                    , new SqlParameter("productId", product.ProductId)
+                    , new SqlParameter("tagName", tag.Name));
+
+
+            }
+           
+        }
         public Task<ProductResponse> UpdateProductAsync(Product product)
         {
             throw new NotImplementedException();

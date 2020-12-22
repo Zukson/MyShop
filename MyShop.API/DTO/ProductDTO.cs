@@ -15,7 +15,7 @@ namespace MyShop.API.DTO
 
         public string Name { get; set; }
 
-        public List<TagDTO> Tags { get; set; }
+     
 
         public int QuantityInStock { get; set; }
 

@@ -11,10 +11,10 @@ namespace MyShop.API.Data
     {
         public DbSet<ProductDTO> Products { get; set; }
         public DbSet<TagDTO> Tags { get; set; }
-        public DbSet<ProductTagBridgeTable> PTBridges { get; set; }
+        public DbSet<ProductTagBridgeDTO> PTBridges { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<ProductTagBridgeTable>().HasNoKey();
+            builder.Entity<ProductTagBridgeDTO>().HasNoKey();
           
             base.OnModelCreating(builder);
         }

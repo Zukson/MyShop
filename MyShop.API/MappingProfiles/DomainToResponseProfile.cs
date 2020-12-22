@@ -13,7 +13,10 @@ namespace MyShop.API.MappingProfiles
     {
         public DomainToResponseProfile()
         {
-            CreateMap<Product, ProductResponse>();
+            CreateMap<Product, ProductResponse>()
+                .ForMember(productResponse=>productResponse.
+                Tags,opt=>opt.MapFrom(product=>product.Tags.
+                Select(tag=>new TagResponse { Name = tag.Name })));
 
         }
     }

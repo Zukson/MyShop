@@ -9,17 +9,16 @@ using System.Threading.Tasks;
 
 namespace MyShop.API.MappingProfiles
 {
-    public class DTOToDomain : Profile
+    public class DomainToDTO : Profile
     {
-    
-        public DTOToDomain()
+       
+
+        public DomainToDTO()
         {
+            
+            CreateMap<Tag, TagDTO>();
+            CreateMap<Product, ProductDTO>();
 
-
-          
-            CreateMap<TagDTO, Tag>();
-
-            CreateMap<ProductDTO, Product>().ForMember(product => product.Tags, opt => opt.Ignore());
         }
     }
 }

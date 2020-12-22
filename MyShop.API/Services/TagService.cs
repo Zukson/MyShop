@@ -26,19 +26,19 @@ namespace MyShop.API.Services
             return created > 0;
         }
 
-        public async Task<bool> CheckIfTagExist(Tag tag)
-        {
-        var tagFound=   await  _dataContext.Tags.FindAsync(tag);
-            if (tagFound is null)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+        //public async Task<bool> CheckIfTagExist(Tag tag)
+        //{
+        //var tagFound=   await  _dataContext.Tags.FindAsync(tag);
+        //    if (tagFound is null)
+        //    {
+        //        return false;
+        //    }
+        //    else
+        //    {
+        //        return true;
+        //    }
 
-        }
+        //}
            
     }
 }
