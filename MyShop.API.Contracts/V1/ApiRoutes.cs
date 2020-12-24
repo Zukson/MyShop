@@ -21,6 +21,13 @@ namespace MyShop.API.Contracts.V1
             public const string UpdateProduct = Base + "/" + ProductRoot + "/" + "{productId}";
 
         }
+        public static class Identity
+        {
+            public const string IdentityRoot = "identity";
+            public const string Login = Base + "/" + IdentityRoot + "login";
+            public const string Register = Base + "/" + IdentityRoot + "register";
+        }
+
     }
 
    

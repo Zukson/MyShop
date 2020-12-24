@@ -1,10 +1,16 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using MyShop.API.Services;
+using MyShop.API.Settings;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace MyShop.API.Installers
@@ -13,6 +19,31 @@ namespace MyShop.API.Installers
     {
         public void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
+            var jwtSettings = new JwtSettings();
+            configuration.Bind(nameof(JwtSettings), jwtSettings);
+            services.AddSingleton(jwtSettings);
+
+            services.AddAuthentication(x =>
+            {
+                
+                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(x =>
+            {
+                x.SaveToken = true;
+                x.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                    ValidateIssuer = true,
+                    ValidateAudience = false,
+                    RequireExpirationTime = false,
+                    ValidateLifetime = true
+
+                };
+            }
+             );
             services.AddSwaggerGen(x =>
             {
                 x.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -20,6 +51,26 @@ namespace MyShop.API.Installers
                     Title = "MyShop Api",
                     Version = "V1"
                 });
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    {"Bearer",new string[0] }
+                };
+                x.AddSecurityDefinition(name: "Bearer", new OpenApiSecurityScheme()
+                {
+                    Description = "JWT Authorization header using the bearer scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey
+                });
+                x.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {new OpenApiSecurityScheme{Reference = new OpenApiReference
+                    {
+                        Id = "Bearer",
+                        Type = ReferenceType.SecurityScheme
+                    }}, new List<string>()}
+                });
+
             }
             );
             services.AddSingleton<IUriService>(provider =>
@@ -29,6 +80,7 @@ namespace MyShop.API.Installers
                 var absoluteUri = string.Concat(request.Scheme, "://", request.Host.ToUriComponent(), "/");
                 return new UriService(absoluteUri);
             });
+            services.AddScoped<IIdentityService, IdentityService>();
         }
     }
 }

@@ -28,20 +28,27 @@ namespace MyShop.API.Controllers
         [HttpGet(ApiRoutes.Products.GetAllProducts)]
         public async Task<IActionResult> Get()
         {
-            return  Ok(await _productService.GetAllProductsAsync());
+            return  Ok(_mapper.Map<List<ProductResponse>>(await _productService.GetAllProductsAsync()));
         }
         [HttpGet(ApiRoutes.Products.GetProductById)]
-        public IActionResult Get([FromRoute] Guid productId)
+        public async  Task<IActionResult> Get([FromRoute] Guid productId)
         {
-         var output=   _productService.GetProductByIdAsync(productId);
-            if(output is null)
-            {
-                return BadRequest("Product not found");
-            }
-            else
-            {
-                return Ok(output);
-            }
+          
+
+                var output =_mapper.Map<ProductResponse>(await _productService.GetProductByIdAsync(productId));
+                if (output is null)
+                {
+                    return BadRequest("Product not found");
+                }
+                else
+                {
+                    return Ok(output);
+                }
+           
+               
+           
+                
+            
         }
 
         [HttpPost(ApiRoutes.Products.PostProduct)]

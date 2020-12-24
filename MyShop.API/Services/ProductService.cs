@@ -44,19 +44,22 @@ namespace MyShop.API.Services
 
         public  async Task<Product> GetProductByIdAsync(Guid productId)
         {
-            var output = await _dataContext.Products.FindAsync(productId);
-           if(output==null)
+            var productDTO = await _dataContext.Products.FindAsync(productId);
+           if(productDTO == null)
             {
-                throw new Exception("Product Not Found");
+                return null;
             }
 
             else
             {
-                return _mapper.Map<Product>(output);
+                var output = _mapper.Map<Product>(productDTO);
+               output.Tags = _mapper.Map<List<Tag>>(await _productTagsHelper.AddTagsToProduct(output.ProductId));
+                return output;
             }
             
                 
             
+        
         }
 
         public async Task<bool>CreateProductAsync(Product product)
