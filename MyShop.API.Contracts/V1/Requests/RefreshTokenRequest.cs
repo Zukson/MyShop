@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyShop.API.Contracts.V1.Responses
+namespace MyShop.API.Contracts.V1.Requests
 {
-    public class AuthSuccessResponse
+  public  class RefreshTokenRequest
     {
-        public string Token { get; set; }
+        public string JwtToken { get; set; }
         public string RefreshToken { get; set; }
     }
 }

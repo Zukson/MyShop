@@ -22,26 +22,30 @@ namespace MyShop.API.Installers
             var jwtSettings = new JwtSettings();
             configuration.Bind(nameof(JwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
+            var tokenValidationParameters= new TokenValidationParameters
+            {
 
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
+                ValidateIssuer = true,
+                ValidIssuer = "http://localhost:50654",
+                ValidateAudience = false,
+                RequireExpirationTime = false,
+                ValidateLifetime = true
+
+            };
+            services.AddSingleton(tokenValidationParameters);
             services.AddAuthentication(x =>
             {
-                
-                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(x =>
             {
-                x.SaveToken = true;
-                x.TokenValidationParameters = new TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSettings.Secret)),
-                    ValidateIssuer = true,
-                    ValidateAudience = false,
-                    RequireExpirationTime = false,
-                    ValidateLifetime = true
 
-                };
+                x.SaveToken = true;
+                x.TokenValidationParameters = tokenValidationParameters;
             }
              );
             services.AddSwaggerGen(x =>
@@ -82,5 +86,7 @@ namespace MyShop.API.Installers
             });
             services.AddScoped<IIdentityService, IdentityService>();
         }
+
+        
     }
 }

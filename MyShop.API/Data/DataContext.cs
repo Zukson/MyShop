@@ -12,6 +12,7 @@ namespace MyShop.API.Data
         public DbSet<ProductDTO> Products { get; set; }
         public DbSet<TagDTO> Tags { get; set; }
         public DbSet<ProductTagBridgeDTO> PTBridges { get; set; }
+        public DbSet<RefreshTokenDTO> RefreshTokens { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<ProductTagBridgeDTO>().HasNoKey();
