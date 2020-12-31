@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MyShop.API.Domain
-{
+namespace MyShop.API.Contracts.V1.Requests
+{ 
+
     public class UserRegistrationRequest
     {
         public string Email { get; set; }
