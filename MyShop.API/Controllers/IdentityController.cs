@@ -24,25 +24,30 @@ namespace MyShop.API.Controllers
         [HttpPost(ApiRoutes.Identity.Register)]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest user)
         {
-           
-           
-
-            var authResponse = await _identityService.RegisterAsync(user.Email, user.Password);
-
-            if (authResponse.IsSuccess is false)
+            try
             {
-                return BadRequest(new AuthFailedResponse
+                var authResponse = await _identityService.RegisterAsync(user.Email, user.Password);
+
+                if (authResponse.IsSuccess is false)
                 {
-                    Errors = authResponse.Errors
+                    return BadRequest(new AuthFailedResponse
+                    {
+                        Errors = authResponse.Errors
+                    }
+                         );
                 }
-                     );
-            }
-            return Ok(new AuthSuccessResponse
-            {
+                return Ok(new AuthSuccessResponse
+                {
 
-                Token = authResponse.Token,
-                RefreshToken=authResponse.RefreshToken
-            });
+                    Token = authResponse.Token,
+                    RefreshToken = authResponse.RefreshToken
+                });
+            }
+           catch (Exception ex)
+            {
+                string msg = ex.Message;
+                return BadRequest();
+            }
         }
         [HttpPost(ApiRoutes.Identity.Login)]
         public async Task<IActionResult> Login([FromBody]UserLoginRequest user)

@@ -56,5 +56,19 @@ namespace MyShop.API.IntegrationTests
             var resposneContent = await response.Content.ReadFromJsonAsync<ProductResponse>();
             return resposneContent;
         }
+
+        protected async Task<AuthFailedResponse>Login(UserLoginRequest user)
+        {
+         var response=   await _client.PostAsJsonAsync(ApiRoutes.Identity.Login, user);
+
+            var content = await response.Content.ReadFromJsonAsync<AuthFailedResponse>();
+            return content;
+        }
+        protected async Task<AuthSuccessResponse>Register(UserRegistrationRequest user)
+        {
+            var response = await _client.PostAsJsonAsync(ApiRoutes.Identity.Register, user);
+            var content = await response.Content.ReadFromJsonAsync<AuthSuccessResponse>();
+            return content;
+        }
     }
 }
