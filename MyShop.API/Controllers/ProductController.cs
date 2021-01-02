@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyShop.API.Caching;
 using MyShop.API.Contracts.V1;
 using MyShop.API.Contracts.V1.Requests;
 using MyShop.API.Contracts.V1.Responses;
@@ -28,12 +29,13 @@ namespace MyShop.API.Controllers
             _mapper = mapper;
             _uriService = uriService;
         }
-
+        [Cache(500)]
         [HttpGet(ApiRoutes.Products.GetAllProducts)]
         public async Task<IActionResult> Get()
         {
             return  Ok(_mapper.Map<List<ProductResponse>>(await _productService.GetAllProductsAsync()));
         }
+        [Cache(500)]
         [HttpGet(ApiRoutes.Products.GetProductById)]
         public async  Task<IActionResult> Get([FromRoute] Guid productId)
         {
