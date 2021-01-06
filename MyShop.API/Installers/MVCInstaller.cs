@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MyShop.API.Filters;
 using MyShop.API.Services;
 using MyShop.API.Settings;
 using System;
@@ -22,6 +24,9 @@ namespace MyShop.API.Installers
             var jwtSettings = new JwtSettings();
             configuration.Bind(nameof(JwtSettings), jwtSettings);
             services.AddSingleton(jwtSettings);
+            services.AddMvc(options => { options.EnableEndpointRouting = false;
+                options.Filters.Add<ValidationFilter>(); })
+                .AddFluentValidation(mvcConfiguration=> { mvcConfiguration.RegisterValidatorsFromAssemblyContaining<Startup>(); });
             var tokenValidationParameters= new TokenValidationParameters
             {
 

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using MyShop.API.Data;
+using MyShop.API.Filters;
 using MyShop.API.Installers;
 using MyShop.API.Settings;
 using System;
@@ -79,8 +80,8 @@ namespace MyShop.API
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-           
 
+            
           
         }
     }

@@ -35,7 +35,7 @@ namespace MyShop.API.Controllers
         {
             return  Ok(_mapper.Map<List<ProductResponse>>(await _productService.GetAllProductsAsync()));
         }
-        [Cache(500)]
+        [Cache(500)]    
         [HttpGet(ApiRoutes.Products.GetProductById)]
         public async  Task<IActionResult> Get([FromRoute] Guid productId)
         {
@@ -60,6 +60,10 @@ namespace MyShop.API.Controllers
         [HttpPost(ApiRoutes.Products.PostProduct)]
         public async Task<IActionResult> Post([FromBody]PostProductRequest productRequest)
         {
+            if(!ModelState.IsValid)
+            {
+                Console.WriteLine("dd");
+            }
             var product = _mapper.Map<Product>(productRequest);
             product.ProductId = Guid.NewGuid();
             try
