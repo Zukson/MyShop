@@ -29,6 +29,7 @@ namespace MyShop.API.Filters
                             FieldName = error.Key,
                             Message = subError
                         };
+                        errorResponse.Errors.Add(errorModel);
                     }
                 }
                 context.Result = new BadRequestObjectResult(errorResponse);

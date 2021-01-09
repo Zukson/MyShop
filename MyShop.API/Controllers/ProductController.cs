@@ -29,6 +29,10 @@ namespace MyShop.API.Controllers
             _mapper = mapper;
             _uriService = uriService;
         }
+     ///   <summary>
+     ///Returns all products
+     ///</summary>
+     ///<response code="200">Returns all products</response>
         [Cache(500)]
         [HttpGet(ApiRoutes.Products.GetAllProducts)]
         public async Task<IActionResult> Get()
@@ -56,18 +60,18 @@ namespace MyShop.API.Controllers
                 
             
         }
-
+        ///   <summary>
+        ///Create product
+        ///</summary>
+        ///<response code="200">Create a product</response>
+        /// ///<response code="400">Product already exist </response>
         [HttpPost(ApiRoutes.Products.PostProduct)]
         public async Task<IActionResult> Post([FromBody]PostProductRequest productRequest)
         {
-            if(!ModelState.IsValid)
-            {
-                Console.WriteLine("dd");
-            }
+         
             var product = _mapper.Map<Product>(productRequest);
             product.ProductId = Guid.NewGuid();
-            try
-            {
+           
                 var success = await _productService.CreateProductAsync(product);
                 if (!success)
                 {
@@ -75,18 +79,25 @@ namespace MyShop.API.Controllers
 
                 }
                 return Created(_uriService.GetPostUri(product.ProductId.ToString()), _mapper.Map<ProductResponse>(product));
-            }
+         
 
-            catch(Exception ex)
+          
+        }
+        [HttpPut(ApiRoutes.Products.UpdateProduct)]
+        public async Task<IActionResult> Put([FromRoute] string productId, [FromBody] UpdateProductRequest productRequest)
+        {
+            var product = _mapper.Map<Product>(productRequest);
+            var response = await  _productService.UpdateProductAsync(productId,product );
+
+            if(!response)
             {
-                return BadRequest(ex.Message);
+                return BadRequest("Unable to update product");
             }
-           
+            return Ok(_mapper.Map<ProductResponse>(product));
 
-            
-               
-            
+
         }
 
     }
+    
 }

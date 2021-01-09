@@ -93,9 +93,29 @@ namespace MyShop.API.Services
             }
            
         }
-        public Task<ProductResponse> UpdateProductAsync(Product product)
+        public  async Task<bool> UpdateProductAsync(string productId,Product product)
         {
-            throw new NotImplementedException();
+         if   (!Guid.TryParse(productId,out Guid parsedId))
+              {  
+             
+                return false;
+            }
+
+           var productDto= await _dataContext.Products.FindAsync(parsedId);
+            if(productDto is null)
+            {
+                return false;
+            }
+
+            else
+            {
+                var updatedProduct = _mapper.Map<ProductDTO>(product);
+                  _dataContext.Products.Update(updatedProduct);
+
+                return await _dataContext.SaveChangesAsync()>0;
+            }
+            
+
         }
     }
 }

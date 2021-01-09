@@ -16,6 +16,9 @@ namespace MyShop.API.MappingProfiles
             CreateMap<PostProductRequest, Product>().ForMember(product => product.ProductId, opt => opt.Ignore())
                 .ForMember(product => product.Tags, opt => opt.
                 MapFrom(productRequest => productRequest.Tags.Select(tag=>new Tag { Name = tag.Name })));
+            CreateMap<UpdateProductRequest, Product>().ForMember(product => product.ProductId, opt => opt.Ignore())
+                .ForMember(product => product.Tags, opt => opt.
+                MapFrom(productRequest => productRequest.Tags.Select(tag => new Tag { Name = tag.Name })));
         }
     }
 }

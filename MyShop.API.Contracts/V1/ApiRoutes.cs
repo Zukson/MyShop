@@ -19,6 +19,7 @@ namespace MyShop.API.Contracts.V1
             public const string GetProductById = Base +"/" + ProductRoot +"/"+ "{productId}";
             public const string PostProduct = Base + "/" + ProductRoot;
             public const string UpdateProduct = Base + "/" + ProductRoot + "/" + "{productId}";
+            
 
         }
         public static class Identity

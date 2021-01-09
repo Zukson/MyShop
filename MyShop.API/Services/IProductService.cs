@@ -12,7 +12,7 @@ namespace MyShop.API.Services
         Task<List<Product>> GetAllProductsAsync();
         Task<Product> GetProductByIdAsync(Guid productId);
         Task<bool> CreateProductAsync(Product product);
-        Task<ProductResponse> UpdateProductAsync(Product product);
+        Task<bool> UpdateProductAsync(string productId, Product product);
       
 
         

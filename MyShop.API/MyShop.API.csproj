@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-MyShop.API-84E3DC1B-62BD-46F7-A408-A562952D3848</UserSecretsId>
   </PropertyGroup>
 
+	<PropertyGroup>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<NoWarn>;1591</NoWarn>
+	</PropertyGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
@@ -20,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MyShop.API.Contracts\MyShop.API.Contracts.csproj" />
+    <ProjectReference Include=".\..\MyShop.API.Contracts\MyShop.API.Contracts.csproj" />
   </ItemGroup>
 
 </Project>
